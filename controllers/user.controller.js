@@ -59,19 +59,17 @@ const loginUser = asyncHandler(async (req, res) => {
   //check in database
   //cookies add
 
-  const { email, password, username } = req.body;
+  const { password, username } = req.body;
 
-  if (!(username || email)) {
-    throw new ApiError(400, "username or email is required to login!");
+  if (!username || username === "") {
+    throw new ApiError(400, "Username is required to login!");
   }
 
   if (password === "") {
     throw new ApiError(400, "Password is required to login!");
   }
 
-  const user = await User.findOne({
-    $or: [{ username }, { email }],
-  });
+  const user = await User.findOne({ username })
 
   if (!user) {
     throw new ApiError(404, "User not found!");
@@ -94,7 +92,7 @@ const loginUser = asyncHandler(async (req, res) => {
   );
 
   const options = {
-    httpOnly: true,
+    httpOnly: true, 
     secure: true,
   };
 

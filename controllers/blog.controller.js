@@ -10,7 +10,7 @@ const createBlog = asyncHandler(async (req, res) => {
   if (!(title && content)) {
     throw new ApiError(401, "Title and content are required field!");
   }
-
+ 
   const user = await User.findById(req.user?._id);
 
   if (!user) {
