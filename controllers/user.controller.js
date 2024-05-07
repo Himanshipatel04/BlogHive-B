@@ -1,6 +1,7 @@
 import ApiError from "../utils/ApiError";
 import asyncHandler from "../utils/asyncHandler";
 import { User } from "../models/user.model";
+import Blog from "../models/blog.model"
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import ApiResponse from "../utils/ApiResponse";
@@ -134,6 +135,18 @@ const logoutUser = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, "User logout successfully!", {}));
 });
 
+const getTotalUserBlogs = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.user?._id);
+
+  if (!user) {
+    throw new ApiError(404, "User not found!");
+  }
+
+  const totalBlogs = await Blog.countDocuments({ author: req.user?._id });
+
+  res.status(200).json(new ApiResponse(200, "Total blogs fetched successfully!", { totalBlogs }));
+});
+
 const changePassword = asyncHandler(async (req, res) => {
   const { oldPassword, newPassword } = req.body;
 
@@ -163,6 +176,16 @@ const changePassword = asyncHandler(async (req, res) => {
     .status(200)
     .json(new ApiResponse(200, "User password changed successfully!"));
 });
+
+const getUser = asyncHandler(async(req,res) => {
+  const user = await req.user
+  if(!user){
+    throw new ApiError(404,"User not found!")
+  }
+
+  return res.status(200).json(new ApiResponse(200,"User fetched successfully!",user))
+})
+
 
 const changeUsername = asyncHandler(async(req,res) => {
   const {username} = req.body;
@@ -234,4 +257,4 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
 });
 
 
-export { registerUser, loginUser, logoutUser, changePassword,changeUsername,refreshAccessToken };
+export { registerUser, getTotalUserBlogs , loginUser, logoutUser, getUser, changePassword,changeUsername,refreshAccessToken };
