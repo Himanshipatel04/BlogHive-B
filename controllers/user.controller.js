@@ -188,16 +188,21 @@ const getUser = asyncHandler(async(req,res) => {
 
 
 const changeUsername = asyncHandler(async(req,res) => {
-  const {username} = req.body;
+  const {username,oldUsername} = req.body;
 
-  if(!username){
+  if(!username || !oldUsername){
     throw new ApiError(402,"Username is required!")
   }
 
   const user = await User.findById(req.user._id)
 
+
   if(!user){
     throw new ApiError(404,"User not found!")
+  }
+
+  if(oldUsername !== user.username ){
+    throw new ApiError(402,"Incorrect Old Username!")
   }
 
   user.username = username
