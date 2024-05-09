@@ -15,7 +15,7 @@ const blogSchema = mongoose.Schema(
       required: true,
       validate: {
         validator: (value) => {
-          return value.trim().split(/\s+/).length <= 100;
+          return value.trim().split(/\s+/).length <= 500;
         },
         message: (props) => `${props.value} exceeds the limit of 100 words!`,
       },

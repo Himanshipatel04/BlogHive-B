@@ -133,7 +133,7 @@ const logoutUser = asyncHandler(async (req, res) => {
     .clearCookie("accessToken", options)
     .clearCookie("refreshToken", options)
     .json(new ApiResponse(200, "User logout successfully!", {}));
-});
+}); 
 
 const getTotalUserBlogs = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user?._id);
