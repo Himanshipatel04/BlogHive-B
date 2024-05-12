@@ -17,11 +17,18 @@ app.use(express.static("public"))
 //routes
 import userRoutes from "./routes/user.routes.js"
 import blogRoutes from "./routes/blog.routes.js"
+import sendEmail from "./utils/Email.js";
+import likeRoutes from "./routes/like.routes.js"
+
 
 
 app.use("/api/v1/users",userRoutes)
 
 app.use("/api/v1/blogs",blogRoutes)
 
+app.use("/api/v1/likes",likeRoutes)
+
+
+// sendEmail()
 
 export {app}
