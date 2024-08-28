@@ -1,8 +1,8 @@
-import asyncHandler from "../utils/asyncHandler";
-import Blog from "../models/blog.model";
-import ApiError from "../utils/ApiError";
-import { User } from "../models/user.model";
-import ApiResponse from "../utils/ApiResponse";
+import asyncHandler from "../utils/asyncHandler.js";
+import Blog from "../models/blog.model.js";
+import ApiError from "../utils/ApiError.js";
+import { User } from "../models/user.model.js";
+import ApiResponse from "../utils/ApiResponse.js";
 
 const createBlog = asyncHandler(async (req, res) => {
   const { title, content } = req.body;

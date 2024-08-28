@@ -26,14 +26,14 @@ const toggleLike = asyncHandler(async (req, res) => {
     likeCount -= 1;
     res
     .status(200)
-    .json(new ApiResponse(200, "Like removed successfully!", { likeCount }));
+    .json(new ApiResponse(200, "Like removed successfully!", { likeCount,isLiked:false }));
   } else {
     try {
     const newLike = Like.create({ likedBy: userId, blog: blogId });
       likeCount += 1;
       res
       .status(200)
-      .json(new ApiResponse(200, "Liked successfully!", { likeCount }));
+      .json(new ApiResponse(200, "Liked successfully!", { likeCount ,isLiked:true}));
     } catch (error) {
       throw new ApiError(500, "Error occurred while saving like.");
     }

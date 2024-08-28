@@ -1,10 +1,10 @@
-import ApiError from "../utils/ApiError";
-import asyncHandler from "../utils/asyncHandler";
-import { User } from "../models/user.model";
-import Blog from "../models/blog.model"
+import ApiError from "../utils/ApiError.js";
+import asyncHandler from "../utils/asyncHandler.js";
+import { User } from "../models/user.model.js";
+import Blog from "../models/blog.model.js"
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import ApiResponse from "../utils/ApiResponse";
+import ApiResponse from "../utils/ApiResponse.js";
 
 const generateAccessAndRefreshToken = async (userId) => {
   try {
