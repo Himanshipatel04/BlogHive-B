@@ -9,7 +9,7 @@ const app = express();
 //Middlewares
 app.use(
   cors({
-    origin: "http://localhost:3000",  // Allows requests from this specific origin
+    origin: ["http://localhost:3000","https://bloghive-lovat.vercel.app"],  // Allows requests from this specific origin
     methods: ['GET', 'POST', 'PUT', 'DELETE'],  // Specifies allowed HTTP methods
     allowedHeaders: ['Content-Type', 'Authorization'],  // Specifies allowed headers in requests
     credentials: true,  // Allows credentials like cookies to be sent in requests
