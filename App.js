@@ -8,12 +8,14 @@ const app = express();
  
 //Middlewares
 app.use(
-  cors({ 
+  cors({
     origin: [ 
-      "http://localhost:3000/",
-      "https://bloghive-lovat.vercel.app/",
-      "https://bloghive-git-main-himanshipatel0409gmailcoms-projects.vercel.app/",
+      "http://localhost:3000",
+      "https://bloghive-lovat.vercel.app",
+      "https://bloghive-git-main-himanshipatel0409gmailcoms-projects.vercel.app",
     ],
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization']
   })
 );
 
