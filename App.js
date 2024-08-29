@@ -9,12 +9,13 @@ const app = express();
 //Middlewares
 app.use(
   cors({
-    origin: "*",
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
-    credentials: true,  // Add this line if you need to support credentials (e.g., cookies)
+    origin: "http://localhost:3000",  // Allows requests from this specific origin
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],  // Specifies allowed HTTP methods
+    allowedHeaders: ['Content-Type', 'Authorization'],  // Specifies allowed headers in requests
+    credentials: true,  // Allows credentials like cookies to be sent in requests
   })
 );
+
 
 app.options('*', cors());
 
