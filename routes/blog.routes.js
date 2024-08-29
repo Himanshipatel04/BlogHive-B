@@ -8,7 +8,7 @@ router.route("/createBlog").post(verifyJWT,createBlog)
 
 router.route("/updateBlog/:id").post(verifyJWT,updateBlog)
 
-router.route("/allBlogs").post(verifyJWT,getUserBlogs)
+router.route("/allBlogs").post(getUserBlogs)
 
 router.route("/deleteBlog/:id").post(verifyJWT,deleteBlog)
 
