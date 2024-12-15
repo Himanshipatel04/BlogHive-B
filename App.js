@@ -2,22 +2,22 @@ import cors from "cors";
 import "dotenv/config";
 import express, { urlencoded } from "express";
 import cookieParser from "cookie-parser";
- 
+
 //express
-const app = express(); 
- 
+const app = express();
+
 //Middlewares
 app.use(
   cors({
-    origin: ["http://localhost:3000","https://bloghive-lovat.vercel.app"],  // Allows requests from this specific origin
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],  // Specifies allowed HTTP methods
-    allowedHeaders: ['Content-Type', 'Authorization'],  // Specifies allowed headers in requests
-    credentials: true,  // Allows credentials like cookies to be sent in requests
+    origin: ["http://localhost:3000", "https://bloghive-lovat.vercel.app"], // Allows requests from this specific origin
+    methods: ["GET", "POST", "PUT", "DELETE"], // Specifies allowed HTTP methods
+    allowedHeaders: ["Content-Type", "Authorization"], // Specifies allowed headers in requests
+    credentials: true, // Allows credentials like cookies to be sent in requests
   })
 );
 
 
-app.options('*', cors());
+app.options("*", cors());
 
 app.use(urlencoded({ extended: true }));
 app.use(express.json());

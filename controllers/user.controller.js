@@ -7,14 +7,10 @@ import jwt from "jsonwebtoken";
 import ApiResponse from "../utils/ApiResponse.js";
 
 const generateAccessAndRefreshToken = async (userId) => {
-  try {
+  try {  
     const user = await User.findById(userId);
-    // console.log(user);
-    const accessToken = user.generateAccessToken();
-    // console.log(accessToken);
-
+    const accessToken = user.generateAccessToken(); 
     const refreshToken = user.generateRefreshToken();
-    // console.log(refreshToken);
 
     user.refreshToken = refreshToken;
     await user.save({ validateBeforeSave: false });
@@ -89,7 +85,7 @@ const loginUser = asyncHandler(async (req, res) => {
   // console.log(accessToken, refreshToken);
 
   const loggedInUser = await User.findById(user._id).select(
-    " -password -refreshToken "
+    " -password -refreshToken"
   );
 
   const options = {
@@ -111,6 +107,7 @@ const loginUser = asyncHandler(async (req, res) => {
 });
 
 const logoutUser = asyncHandler(async (req, res) => {
+  console.log(req.user,"from logout user controller function");
   await User.findByIdAndUpdate(
     req.user._id,
     {
@@ -125,7 +122,7 @@ const logoutUser = asyncHandler(async (req, res) => {
 
   const options = {
     httpsOnly: true,
-    secure: true,
+    // secure: true,
   };
 
   return res
@@ -239,7 +236,7 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
 
     const options = {
       httpOnly: true,
-      secure: true,
+      // secure: true,
     };
 
     const { accessToken, newrefreshToken } =

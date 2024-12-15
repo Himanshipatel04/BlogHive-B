@@ -10,7 +10,7 @@ const createBlog = asyncHandler(async (req, res) => {
   if (!(title && content)) {
     throw new ApiError(401, "Title and content are required field!");
   }
- 
+
   const user = await User.findById(req.user?._id);
 
   if (!user) {
@@ -32,7 +32,7 @@ const createBlog = asyncHandler(async (req, res) => {
 
 const getAllBlogs = asyncHandler(async (req, res) => {
   // Fetch all blogs from the database
-  const blogs = await Blog.find().populate('author', 'username');
+  const blogs = await Blog.find().populate("author", "username");
 
   // Check if any blogs are found
   if (blogs.length === 0) {
@@ -40,20 +40,22 @@ const getAllBlogs = asyncHandler(async (req, res) => {
   }
 
   // Return the blogs as a successful response
-  res.status(200).json(new ApiResponse(200, "Blogs found successfully!", blogs));
+  res
+    .status(200)
+    .json(new ApiResponse(200, "Blogs found successfully!", blogs));
 });
 
-const getBlogsById = asyncHandler(async(req,res) => {
+const getBlogsById = asyncHandler(async (req, res) => {
   try {
     const blog = await Blog.findById(req.params.id);
     if (!blog) {
-        return res.status(404).json({ message: 'Blog not found' });
+      return res.status(404).json({ message: "Blog not found" });
     }
     res.json(blog);
-} catch (err) {
+  } catch (err) {
     res.status(500).json({ message: err.message });
-}
-})
+  }
+});
 
 const updateBlog = asyncHandler(async (req, res) => {
   const { title, content } = req.body;
@@ -90,18 +92,21 @@ const updateBlog = asyncHandler(async (req, res) => {
 });
 
 const getUserBlogs = asyncHandler(async (req, res) => {
+  // console.log("hello i am here ");
   const user = await User.findById(req.user?._id);
-
   if (!user) {
     throw new ApiError(404, "User not found!");
   }
+  // console.log(req.user,"geyhsdf");
 
   const blogs = await Blog.find({ author: req.user?._id }).select(
     "title content author"
   );
 
   if (blogs.length === 0) {
-    throw new ApiError(404, "No blogs found for this user!");
+    return res
+      .status(200)
+      .json(new ApiResponse(200, "No blogs found for this user!", []));
   }
 
   res
@@ -121,12 +126,20 @@ const deleteBlog = asyncHandler(async (req, res) => {
   res.status(200).json(new ApiResponse(200, "Blog deleted successfully!"));
 });
 
-const getAuthor = asyncHandler(async(req,res) => {
+const getAuthor = asyncHandler(async (req, res) => {
   const author = await User.findById(req.params.id);
-  if(!author) {
-    throw new ApiError(404,"User not found!")
+  if (!author) {
+    throw new ApiError(404, "User not found!");
   }
-  res.status(200).json(new ApiResponse(200,"Author fetched!",author))
-})
+  res.status(200).json(new ApiResponse(200, "Author fetched!", author));
+});
 
-export { createBlog, updateBlog,getBlogsById, getAuthor,getAllBlogs, getUserBlogs, deleteBlog };
+export {
+  createBlog,
+  updateBlog,
+  getBlogsById,
+  getAuthor,
+  getAllBlogs,
+  getUserBlogs,
+  deleteBlog,
+};

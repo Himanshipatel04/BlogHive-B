@@ -8,13 +8,13 @@ router.route("/createBlog").post(verifyJWT,createBlog)
 
 router.route("/updateBlog/:id").post(verifyJWT,updateBlog)
 
-router.route("/allBlogs").post(getUserBlogs)
+router.route("/allBlogs").post(verifyJWT,getUserBlogs)
 
 router.route("/deleteBlog/:id").post(verifyJWT,deleteBlog)
 
 router.route("/getAllBlogs").post(getAllBlogs)
 
-router.route("/getBlogsById/:id").post(verifyJWT,getBlogsById)
+router.route("/getBlogsById/:id").post(getBlogsById)
 
 router.route("/getAuthor/:id").post(verifyJWT,getAuthor)
 

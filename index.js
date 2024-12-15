@@ -3,11 +3,11 @@ import "dotenv/config";
 import  dbConnection  from "./db/dbConnection.js";
 
 
-
 //Database Connection
-dbConnection();
+dbConnection()
 
 
 app.listen(process.env.PORT || 3000 , () => {
     console.log(`Server is running at ${process.env.PORT}`);
 })
+ 
