@@ -14,7 +14,7 @@ app.use(
     origin: [
       "http://localhost:3000",
       "http://localhost:3001",
-      "https://bloghive-lovat.vercel.app",
+      "https://blog-hive-web.vercel.app/",
     ], // Allows requests from this specific origin
     methods: ["GET", "POST", "PUT", "DELETE"], // Specifies allowed HTTP methods
     allowedHeaders: ["Content-Type", "Authorization"], // Specifies allowed headers in requests
