@@ -90,7 +90,7 @@ const loginUser = asyncHandler(async (req, res) => {
   // console.log("here8");
   const options = {
     httpOnly: true,
-    secure: false,
+    secure: true,
   };
   console.log("here9", accessToken, refreshToken);
   res
@@ -120,7 +120,7 @@ const logoutUser = asyncHandler(async (req, res) => {
 
   const options = {
     httpsOnly: true,
-    // secure: true,
+     secure: true,
   };
 
   return res
