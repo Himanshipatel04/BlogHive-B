@@ -7,15 +7,25 @@ import cookieParser from "cookie-parser";
 const app = express();
 
 //Middlewares
+app.use((req, res, next) => {
+  const { method, originalUrl } = req;
+  const timestamp = new Date().toISOString();
+  console.log(`[${timestamp}] ${method} ${originalUrl}`);
+  next(); // Pass control to the next middleware or route handler
+});
+
 app.use(
   cors({
-    origin: ["http://localhost:3000", "https://bloghive-lovat.vercel.app"], // Allows requests from this specific origin
+    origin: [
+      "http://localhost:3000",
+      "http://localhost:3001",
+      "https://bloghive-lovat.vercel.app",
+    ], // Allows requests from this specific origin
     methods: ["GET", "POST", "PUT", "DELETE"], // Specifies allowed HTTP methods
     allowedHeaders: ["Content-Type", "Authorization"], // Specifies allowed headers in requests
     credentials: true, // Allows credentials like cookies to be sent in requests
   })
 );
-
 
 app.options("*", cors());
 

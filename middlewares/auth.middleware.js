@@ -10,7 +10,7 @@ export const verifyJWT = asyncHandler(async (req, _, next) => {
       req.body?.accessToken ||
       req.header("Authorization")?.replace("Bearer ", "");
 
-    console.log("Cookies:", req.cookies?.accessToken);
+    // console.log("Cookies:", req.cookies?.accessToken);
     // console.log("Body:", req.body?.accessToken);
     // console.log("Header:", req.header("Authorization"));
 
