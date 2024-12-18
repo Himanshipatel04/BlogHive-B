@@ -16,7 +16,7 @@ router.route("/getAllBlogs").post(getAllBlogs)
 
 router.route("/getBlogsById/:id").post(getBlogsById)
 
-router.route("/getAuthor/:id").post(verifyJWT,getAuthor)
+router.route("/getAuthor/:id").post(getAuthor)
 
 
 export default router

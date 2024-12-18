@@ -1,15 +1,15 @@
 import ApiError from "../utils/ApiError.js";
 import asyncHandler from "../utils/asyncHandler.js";
 import { User } from "../models/user.model.js";
-import Blog from "../models/blog.model.js"
+import Blog from "../models/blog.model.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import ApiResponse from "../utils/ApiResponse.js";
 
 const generateAccessAndRefreshToken = async (userId) => {
-  try {  
+  try {
     const user = await User.findById(userId);
-    const accessToken = user.generateAccessToken(); 
+    const accessToken = user.generateAccessToken();
     const refreshToken = user.generateRefreshToken();
 
     user.refreshToken = refreshToken;
@@ -57,57 +57,55 @@ const loginUser = asyncHandler(async (req, res) => {
   //cookies add
 
   const { password, username } = req.body;
-
+  console.log(password, username);
   if (!username || username === "") {
     throw new ApiError(400, "Username is required to login!");
   }
-
+  // console.log("here1");
   if (password === "") {
     throw new ApiError(400, "Password is required to login!");
   }
-
-  const user = await User.findOne({ username })
-
+  // console.log("here2");
+  const user = await User.findOne({ username });
+  // console.log("here3");
   if (!user) {
     throw new ApiError(404, "User not found!");
   }
-
+  // console.log("here4");
   const isPasswordCorrect = await user.isPasswordCorrect(password);
-
+  // console.log("here5");
   if (!isPasswordCorrect) {
     throw new ApiError(400, "Password is incorrect!");
   }
-
+  // console.log("here6");
   const { accessToken, refreshToken } = await generateAccessAndRefreshToken(
     user._id
   );
-
+  // console.log("here7");
   // console.log(accessToken, refreshToken);
 
   const loggedInUser = await User.findById(user._id).select(
     " -password -refreshToken"
   );
-
+  // console.log("here8");
   const options = {
-    httpOnly: true, 
-    secure: true,
+    httpOnly: true,
+    secure: false,
   };
-
+  console.log("here9", accessToken, refreshToken);
   res
     .status(200)
     .cookie("accessToken", accessToken, options)
     .cookie("refreshToken", refreshToken, options)
     .json(
       new ApiResponse(200, "User logged In successfully!", {
-        user:{accessToken,
-        refreshToken,
-        loggedInUser},
+        user: { accessToken, refreshToken, loggedInUser },
       })
     );
 });
 
 const logoutUser = asyncHandler(async (req, res) => {
-  console.log(req.user,"from logout user controller function");
+  // console.log(req.user, "from logout user controller function");
   await User.findByIdAndUpdate(
     req.user._id,
     {
@@ -130,7 +128,7 @@ const logoutUser = asyncHandler(async (req, res) => {
     .clearCookie("accessToken", options)
     .clearCookie("refreshToken", options)
     .json(new ApiResponse(200, "User logout successfully!", {}));
-}); 
+});
 
 const getTotalUserBlogs = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user?._id);
@@ -141,7 +139,11 @@ const getTotalUserBlogs = asyncHandler(async (req, res) => {
 
   const totalBlogs = await Blog.countDocuments({ author: req.user?._id });
 
-  res.status(200).json(new ApiResponse(200, "Total blogs fetched successfully!", { totalBlogs }));
+  res
+    .status(200)
+    .json(
+      new ApiResponse(200, "Total blogs fetched successfully!", { totalBlogs })
+    );
 });
 
 const changePassword = asyncHandler(async (req, res) => {
@@ -162,8 +164,8 @@ const changePassword = asyncHandler(async (req, res) => {
   if (!isPasswordCorrect) {
     throw new ApiError(402, "Password is incorrect!");
   }
- 
-  const newHashedPassword = await bcrypt.hash(newPassword,10)
+
+  const newHashedPassword = await bcrypt.hash(newPassword, 10);
 
   user.password = newHashedPassword;
 
@@ -174,41 +176,41 @@ const changePassword = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, "User password changed successfully!"));
 });
 
-const getUser = asyncHandler(async(req,res) => {
-  const user = await req.user
-  if(!user){
-    throw new ApiError(404,"User not found!")
+const getUser = asyncHandler(async (req, res) => {
+  const user = await req.user;
+  // console.log(user, "from get user controller function");
+  if (!user) {
+    throw new ApiError(404, "User not found!");
   }
 
-  return res.status(200).json(new ApiResponse(200,"User fetched successfully!",user))
-})
+  return res
+    .status(200)
+    .json(new ApiResponse(200, "User fetched successfully!", user));
+});
 
+const changeUsername = asyncHandler(async (req, res) => {
+  const { username, oldUsername } = req.body;
 
-const changeUsername = asyncHandler(async(req,res) => {
-  const {username,oldUsername} = req.body;
-
-  if(!username || !oldUsername){
-    throw new ApiError(402,"Username is required!")
+  if (!username || !oldUsername) {
+    throw new ApiError(402, "Username is required!");
   }
 
-  const user = await User.findById(req.user._id)
+  const user = await User.findById(req.user._id);
 
-
-  if(!user){
-    throw new ApiError(404,"User not found!")
+  if (!user) {
+    throw new ApiError(404, "User not found!");
   }
 
-  if(oldUsername !== user.username ){
-    throw new ApiError(402,"Incorrect Old Username!")
+  if (oldUsername !== user.username) {
+    throw new ApiError(402, "Incorrect Old Username!");
   }
 
-  user.username = username
+  user.username = username;
 
-  await user.save({validateBeforeSave:false})
+  await user.save({ validateBeforeSave: false });
 
-  res.status(200).json(new ApiResponse(200,"Username changed successfully!"))
-
-})
+  res.status(200).json(new ApiResponse(200, "Username changed successfully!"));
+});
 
 const refreshAccessToken = asyncHandler(async (req, res) => {
   const incomingRefreshToken =
@@ -258,5 +260,13 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
   }
 });
 
-
-export { registerUser, getTotalUserBlogs , loginUser, logoutUser, getUser, changePassword,changeUsername,refreshAccessToken };
+export {
+  registerUser,
+  getTotalUserBlogs,
+  loginUser,
+  logoutUser,
+  getUser,
+  changePassword,
+  changeUsername,
+  refreshAccessToken,
+};

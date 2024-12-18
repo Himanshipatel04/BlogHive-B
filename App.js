@@ -7,12 +7,7 @@ import cookieParser from "cookie-parser";
 const app = express();
 
 //Middlewares
-app.use((req, res, next) => {
-  const { method, originalUrl } = req;
-  const timestamp = new Date().toISOString();
-  console.log(`[${timestamp}] ${method} ${originalUrl}`);
-  next(); // Pass control to the next middleware or route handler
-});
+
 
 app.use(
   cors({
@@ -28,6 +23,14 @@ app.use(
 );
 
 app.options("*", cors());
+
+
+app.use((req, res, next) => {
+  const { method, originalUrl } = req;
+  const timestamp = new Date().toISOString();
+  console.log(`[${timestamp}] ${method} ${originalUrl}`);
+  next(); // Pass control to the next middleware or route handler
+});
 
 app.use(urlencoded({ extended: true }));
 app.use(express.json());
